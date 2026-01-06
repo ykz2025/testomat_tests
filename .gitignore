@@ -2,6 +2,4 @@
 .idea/
 .venv/
 .env
-.tests/__pycache__/
-*.pyc
-src/
+**/__pycache__/
