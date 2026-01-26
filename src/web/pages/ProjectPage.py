@@ -2,10 +2,13 @@ from typing import Self
 
 from playwright.sync_api import Page, expect
 
+from src.web.components.SideBar import SideBar
+
 
 class ProjectPage:
     def __init__(self, page: Page):
         self.page = page
+        self.side_bar = SideBar(page)
 
     def is_loaded(self) -> Self:
         expect(self.page.locator(".sticky-header")).to_be_visible()
@@ -19,4 +22,7 @@ class ProjectPage:
         return self
 
     def close_read_me(self) -> Self:
-        self.page.locator(".back .third-btn").click()
+        button = self.page.locator(".back .third-btn")
+        button.click()
+        expect(button).to_be_hidden()
+        return self
