@@ -3,7 +3,7 @@ from typing import List
 from playwright.sync_api import expect, Page
 
 from src.web.components.ProjectCard import ProjectCard
-from src.web.components.ProjectPageHeader import ProjectsPageHeader
+from src.web.components.ProjectsPageHeader import ProjectsPageHeader
 
 
 class ProjectsPage:

@@ -1,9 +1,8 @@
-import os
-
 import pytest
 from faker import Faker
 from playwright.sync_api import Page, expect
 
+from src.web.pages.App import App
 from tests.conftest import Config
 
 TARGET_PROJECT = "Manufacture light"
@@ -15,8 +14,8 @@ def login(page: Page, configs: Config):
     login_user(page, configs.email, configs.password)
 
 
-def test_open_home_page(page: Page):
-    open_home_page(page)
+def test_open_home_page(page: Page, app: App):
+    app.home_page.open()
     expect(page).to_have_title('AI Test Management Tool | Testomat.io')
 
     header_items = ["Features", "Pricing", "Docs", "Changelog", "Blog", "Log in"]
@@ -27,8 +26,8 @@ def test_open_home_page(page: Page):
     expect(page.locator("header").get_by_role("link", name="Start for free", exact=True)).to_be_visible()
 
 
-def test_invalid_login(page: Page, configs):
-    open_home_page(page)
+def test_invalid_login(page: Page, configs, app: App):
+    app.home_page.open()
     expect(page.locator("[href*='sign_in'].login-item")).to_be_visible()
 
     page.get_by_role("link", name='Log in', exact=True).click()
@@ -40,8 +39,8 @@ def test_invalid_login(page: Page, configs):
     expect(page.locator("#content-desktop .common-flash-info")).to_have_text("Invalid Email or password.")
 
 
-def test_search_project_in_company(page: Page, login):
-    search_for_project(page, TARGET_PROJECT)
+def test_search_project_in_company(page: Page, login, app: App):
+    app.projects_page.search_and_get_results(TARGET_PROJECT)
 
     expect(page.get_by_role("heading", name=TARGET_PROJECT, exact=True)).to_be_visible()
 
@@ -94,18 +93,7 @@ def select_free_projects(page: Page):
     page.locator("#company_id").select_option("Free Projects")
 
 
-def search_for_project(page: Page, target_project: str):
-    expect(page.get_by_role("searchbox", name="Search")).to_be_visible()
-
-    page.locator("#content-desktop #search").fill(target_project)
-
-
-def open_home_page(page: Page):
-    page.goto(os.getenv("BASE_URL"))
-
-
-def login_user(page: Page, email:
-str, password: str):
+def login_user(page: Page, email: str, password: str):
     page.locator("#content-desktop #user_email").fill(email)
     page.locator("#content-desktop #user_password").fill(password)
     page.get_by_role("button", name='Sign in').click()
