@@ -3,6 +3,12 @@ from enum import Enum
 from playwright.sync_api import Locator, expect
 
 
+class Badges(Enum):
+    Demo = "Demo"
+    Classical = "Classical"
+    Pytest = "Pytest"
+
+
 class ProjectCard:
 
     def __init__(self, card: Locator):
@@ -26,13 +32,7 @@ class ProjectCard:
         return self._link.get_attribute('href')
 
     def get_badges_has(self, expected_badge: Badges):
-        expect(self._badges).to_contain(expected_badge.value)
+        expect(self._badges).to_contain_text(expected_badge.value)
 
     def click(self):
         self._link.click()
-
-
-class Badges(Enum):
-    Demo = "Demo"
-    Classical = "Classical"
-    Pytest = "Pytest"
