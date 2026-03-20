@@ -1,9 +1,10 @@
 from .web import (
+    App,
     HomePage,
     LoginPage,
     ProjectPage,
     ProjectsPage,
-    NewProjectsPage,
+    NewProjectPage,
     ProjectCard,
     Badges,
     ProjectsPageHeader,

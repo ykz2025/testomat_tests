@@ -1,5 +1,5 @@
-from src.web.components.ProjectCard import Badges
-from src.web.pages.App import App
+from src.web import App
+from src.web.components import Badges
 
 
 def test_projects_page_header(logged_app: App):
@@ -14,4 +14,4 @@ def test_projects_page_header(logged_app: App):
     logged_app.projects_page.header.search_project(target_project_name)
     logged_app.projects_page.count_of_project_visible(2)
     target_project = logged_app.projects_page.get_project_by_title(target_project_name)
-    target_project.get_badges_has(Badges.Classical)
+    target_project.assert_has_badge(Badges.CLASSICAL)

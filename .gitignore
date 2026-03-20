@@ -1,6 +1,15 @@
-.gitignore
-.idea/
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Environments
 .venv/
 .env
-**/__pycache__/
-test-result
+
+# IDEs
+.idea/
+
+# Playwright / Testing (згідно з вашою структурою)
+test-result/
+videos/

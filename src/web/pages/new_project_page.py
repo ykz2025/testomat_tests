@@ -3,7 +3,7 @@ from typing import Self
 from playwright.sync_api import expect, Page
 
 
-class NewProjectsPage:
+class NewProjectPage:
     def __init__(self, page: Page):
         self.page = page
         self._form_container = page.locator("#content-desktop [action='/projects']")
@@ -31,5 +31,5 @@ class NewProjectsPage:
 
     def click_create(self) -> Self:
         self._form_container.locator("input[type='submit'][value='Create']").click()
-        expect(self._form_container.locator("#project_create-btn input")).to_be_hidden(timeout=10000)
+        expect(self._form_container.locator("#project-create-btn input")).to_be_hidden(timeout=10000)
         return self

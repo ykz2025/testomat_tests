@@ -1,3 +1,4 @@
+from .app import App
 from .components import (
     ProjectCard,
     Badges,
@@ -9,5 +10,5 @@ from .pages import (
     LoginPage,
     ProjectPage,
     ProjectsPage,
-    NewProjectsPage,
+    NewProjectPage,
 )
