@@ -1,8 +1,11 @@
 import pytest
 from faker import Faker
 
-from src.web.pages.App import App
-from tests.conftest import Config
+from src.config import Config
+from src.web import App
+
+fake = Faker()
+LOGIN_ATTEMPT_COOLDOWN_MS = 1500
 
 INVALID_LOGIN_PARAMS = [
     ("valid", "invalid"),
@@ -22,11 +25,9 @@ INVALID_LOGIN_PARAMS = [
 @pytest.mark.smoke
 @pytest.mark.web
 @pytest.mark.parametrize("email_condition, password_condition", INVALID_LOGIN_PARAMS)
-def test_login_invalid(app: App, configs: Config, email_condition, password_condition):
-    fake = Faker()
-
+def test_login_invalid(app: App, config: Config, email_condition, password_condition):
     if email_condition == "valid":
-        email = configs.email
+        email = config.email
     elif email_condition == "invalid":
         email = fake.email()
     elif email_condition == "empty":
@@ -39,7 +40,7 @@ def test_login_invalid(app: App, configs: Config, email_condition, password_cond
         email = fake.email()
 
     if password_condition == "valid":
-        password = configs.password
+        password = config.password
     elif password_condition == "invalid":
         password = fake.password()
     elif password_condition == "empty":
@@ -63,16 +64,18 @@ def test_login_invalid(app: App, configs: Config, email_condition, password_cond
     app.login_page.login(email, password)
 
     app.login_page.invalid_login_message_visible()
+    app.page.wait_for_timeout(LOGIN_ATTEMPT_COOLDOWN_MS)
 
 
 @pytest.mark.smoke
 @pytest.mark.web
-def test_login_with_valid_creds(app: App, configs: Config):
+def test_login_with_valid_creds(app: App, config: Config):
     app.home_page.open()
     app.home_page.is_loaded()
     app.home_page.click_login()
 
     app.login_page.is_loaded()
-    app.login_page.login(configs.email, configs.password)
+    app.login_page.login(config.email, config.password)
+    app.page.wait_for_timeout(LOGIN_ATTEMPT_COOLDOWN_MS)
 
     app.projects_page.is_loaded()

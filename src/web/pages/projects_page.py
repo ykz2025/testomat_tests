@@ -1,9 +1,6 @@
-from typing import List
-
 from playwright.sync_api import expect, Page
 
-from src.web.components.ProjectCard import ProjectCard
-from src.web.components.ProjectsPageHeader import ProjectsPageHeader
+from src.web.components import ProjectCard, ProjectsPageHeader
 
 
 class ProjectsPage:
@@ -26,7 +23,7 @@ class ProjectsPage:
     def get_success_message(self) -> str:
         return self.success_message.text_content().strip()
 
-    def get_projects(self) -> List[ProjectCard]:
+    def get_projects(self) -> list[ProjectCard]:
         return [ProjectCard(card) for card in self._project_cards.all()]
 
     def get_project_by_title(self, title: str) -> ProjectCard:
@@ -39,9 +36,9 @@ class ProjectsPage:
     def get_total_projects(self) -> int:
         return int(self.total_count.text_content())
 
-    def search_and_get_results(self, query: str) -> List[ProjectCard]:
+    def search_and_get_results(self, query: str) -> list[ProjectCard]:
         self.header.search_project(query)
-        self.page.wait_for_timeout(300)
+        self.page.wait_for_load_state('networkidle')
         return self.get_projects()
 
     def verify_page_loaded(self):
@@ -51,11 +48,5 @@ class ProjectsPage:
     def verify_success_message(self, expected_text: str):
         expect(self.success_message).to_have_text(expected_text)
 
-    def get_demo_projects(self) -> List[ProjectCard]:
-        return [project for project in self.get_projects() if project.is_demo_project()]
-
     def is_loaded(self):
-        expect(self.page.locator(".common-flash-success")).to_be_visible()
-        expect(self.page.locator(".common-flash-success")).to_have_text("Signed in successfully")
-
-        expect(self.page.locator(".common-flash-success", has_text="Signed in successfully")).to_be_visible()
+        self.verify_page_loaded()
