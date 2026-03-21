@@ -1,0 +1,18 @@
+[project]
+name = "testomat-tests"
+version = "0.1.0"
+description = "Playwright-based E2E testing framework for Testomat application"
+requires-python = ">=3.14"
+dependencies = [
+    "faker==40.11.0",
+    "playwright==1.58.0",
+    "pytest==9.0.2",
+    "pytest-playwright==0.7.2",
+    "pytest-html==4.2.0",
+    "python-dotenv==1.2.2",
+]
+
+[dependency-groups]
+dev = [
+    "ruff==0.15.7",
+]

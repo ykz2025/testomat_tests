@@ -1,0 +1,18 @@
+# Ruff configuration for testomat_tests_project
+# https://docs.astral.sh/ruff/
+
+# Target Python version
+target-version = "py314"
+
+# Line length to match common standards
+line-length = 120
+
+# Exclude directories
+exclude = [
+    ".git",
+    ".venv",
+    "__pycache__",
+    "test-result",
+]
+
+[lint]
