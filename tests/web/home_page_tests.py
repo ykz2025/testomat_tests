@@ -9,7 +9,7 @@ pytestmark = pytest.mark.web
 
 def test_open_home_page(page: Page, app: App):
     app.home_page.open()
-    expect(page).to_have_title('AI Test Management Tool | Testomat.io')
+    expect(page).to_have_title("AI Test Management Tool | Testomat.io")
 
     header_items = ["Features", "Pricing", "Docs", "Changelog", "Blog", "Log in"]
     for item in header_items:
@@ -35,6 +35,10 @@ def test_should_be_possible_to_open_free_project(logged_app: App):
 
 def test_change_projects_view(logged_app: App):
     logged_app.projects_page.navigate()
+
+    logged_app.page.locator("#company_id").select_option("789")
+    logged_app.page.locator("#grid li").first.wait_for(state="visible", timeout=10000)
+
     logged_app.page.locator("#table-view").click()
 
     expect(logged_app.page.locator("table")).to_be_visible()
