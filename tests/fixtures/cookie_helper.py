@@ -2,35 +2,24 @@ from playwright.sync_api import BrowserContext, Cookie, Page
 
 
 class CookieHelper:
-    """Helper class for cookie manipulation in browser context."""
-
     def __init__(self, context: BrowserContext):
-        self.context = context
+        self.context = context  # Зберігаємо саме контекст
 
-    def add(
-        self,
-        name: str,
-        value: str,
-        domain: str,
-        path: str = "/",
-        *,
-        http_only: bool = False,
-        secure: bool = False,
-        same_site: str = "Lax",
-        expires: float | None = None,
-    ) -> None:
-        """Додає куку до поточного контексту браузера."""
+    def add(self, name: str, value: str, domain: str, **kwargs) -> None:
+        """Adds a cookie to the browser context."""
         cookie: Cookie = {
             "name": name,
             "value": value,
             "domain": domain,
-            "path": path,
-            "httpOnly": http_only,
-            "secure": secure,
-            "sameSite": same_site,
+            "path": kwargs.get("path", "/"),
+            "httpOnly": kwargs.get("http_only", False),
+            "secure": kwargs.get("secure", False),
+            "sameSite": kwargs.get("same_site", "Lax"),
         }
-        if expires:
-            cookie["expires"] = expires
+        if "expires" in kwargs:
+            cookie["expires"] = kwargs["expires"]
+
+        # Correctly call add_cookies on the stored context
         self.context.add_cookies([cookie])
 
     def add_many(self, cookies: list[Cookie]) -> None:

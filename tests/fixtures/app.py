@@ -56,11 +56,11 @@ def app(browser_instance: Browser, configs) -> Generator[App, None, None]:
 
 
 @pytest.fixture(scope="session")
-def logged_page(browser_instance: Browser, configs) -> Generator[BrowserContext, None, None]:
+def logged_page(browser_instance: Browser, configs) -> Generator[Page, None, None]:
     """Logged context - reuses authenticated session (session scope)."""
     if STORAGE_STATE_PATH.exists():
         context = build_browser_context(browser_instance, configs.app_base_url, storage_state=STORAGE_STATE_PATH)
-        yield context
+        yield context.new_page()
         context.close()
         return
 
@@ -80,17 +80,16 @@ def logged_page(browser_instance: Browser, configs) -> Generator[BrowserContext,
 
 
 @pytest.fixture(scope="function")
-def logged_app(logged_page: BrowserContext) -> Generator[App, None, None]:
+def logged_app(logged_page: Page) -> Generator[App, None, None]:
     """Logged app - new page from authenticated context for each test."""
     logged_page.goto("/projects")
     yield App(logged_page)
-    logged_page.close()
 
 
 @pytest.fixture(scope="function")
-def cookies(logged_context: BrowserContext) -> CookieHelper:
+def cookies(logged_page: Page) -> CookieHelper:
     """Provides cookie manipulation helper for the logged-in context."""
-    return CookieHelper(logged_context)
+    return CookieHelper(logged_page.context)
 
 
 @pytest.fixture(scope="module")
@@ -111,7 +110,7 @@ def shared_page(shared_browser: Page) -> Generator[App, None, None]:
 
 
 @pytest.fixture(scope="session")
-def free_project_page(logged_context: BrowserContext, browser_instance: Browser, configs) -> Generator[Page, Any, None]:
+def free_project_page(browser_instance: Browser, configs) -> Generator[Page, Any, None]:
     if FREE_PROJECT_STORAGE_PATH.exists():
         context = build_browser_context(browser_instance, configs.app_base_url, storage_state=FREE_PROJECT_STORAGE_PATH)
         yield context.new_page()

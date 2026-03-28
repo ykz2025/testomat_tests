@@ -12,6 +12,7 @@ class Config:
     login_url: str
     email: str
     password: str
+    api_token: str
 
     @classmethod
     def from_env(cls):
@@ -19,5 +20,6 @@ class Config:
             base_url=os.getenv("BASE_URL"),
             login_url=os.getenv("BASE_APP_URL"),
             email=os.getenv("EMAIL"),
-            password=os.getenv("PASSWORD")
+            password=os.getenv("PASSWORD"),
+            api_token=os.getenv("API_TOKEN", "")
         )
