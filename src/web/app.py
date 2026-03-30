@@ -1,8 +1,9 @@
 from playwright.sync_api import Page
 
-from src.web.pages import HomePage, LoginPage, NewProjectPage, ProjectPage, ProjectsPage
 from src.web.components.test_for_suite_popup import TestForSuitePopup
 from src.web.components.test_modal import TestModal
+from src.web.pages import HomePage, LoginPage, NewProjectPage, ProjectPage, ProjectsPage
+
 
 class App:
     def __init__(self, page: Page):
