@@ -12,4 +12,8 @@ __pycache__/
 
 # Playwright / Testing (згідно з вашою структурою)
 test-result/
-videos/
+test-result/videos/
+
+# Auth state (Security: never commit session tokens or cookies)
+.auth/
+*state.json

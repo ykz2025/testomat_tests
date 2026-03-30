@@ -1,0 +1,20 @@
+[project]
+name = "testomat-tests"
+version = "0.1.0"
+description = "Playwright-based E2E testing framework for Testomat application"
+requires-python = ">=3.14"
+dependencies = [
+    "faker==40.11.1",
+    "playwright==1.58.0",
+    "pytest==9.0.2",
+    "pytest-playwright==0.7.2",
+    "pytest-html==4.2.0",
+    "python-dotenv==1.2.2",
+    "requests-mock>=1.12.1",
+]
+
+[tool.pytest.ini_options]
+addopts = "-vs"
+markers = ["smoke: critical smoke tests", "web: ui automation tests"]
+python_classes = ["*Test", "*Tests"]
+filterwarnings = ["ignore:Module already imported so cannot be rewritten"]
