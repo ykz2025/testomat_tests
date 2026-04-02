@@ -4,17 +4,43 @@ version = "0.1.0"
 description = "Playwright-based E2E testing framework for Testomat application"
 requires-python = ">=3.14"
 dependencies = [
-    "faker==40.11.1",
+    "faker==40.12.0",
     "playwright==1.58.0",
     "pytest==9.0.2",
     "pytest-playwright==0.7.2",
     "pytest-html==4.2.0",
     "python-dotenv==1.2.2",
     "requests-mock>=1.12.1",
+    "selenium>=4.41.0",
 ]
 
+[dependency-groups]
+dev = [
+    "ruff>=0.15.8",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/web"]
+
 [tool.pytest.ini_options]
-addopts = "-vs"
 markers = ["smoke: critical smoke tests", "web: ui automation tests"]
 python_classes = ["*Test", "*Tests"]
 filterwarnings = ["ignore:Module already imported so cannot be rewritten"]
+minversion = "8.0"
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py", "*_tests.py"]
+python_functions = ["test_*"]
+norecursedirs = [".git", ".venv", ".claude", ".idea", "__pycache__", "build", "dist"]
+addopts = [
+    "-v",
+    "-vs",
+    "-ra",
+    "--strict-markers",
+    "--tb=short",
+    "--html=test-result/report.html",
+    "--self-contained-html",
+]
